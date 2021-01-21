@@ -96,7 +96,7 @@ function getCookies() {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
     let cookiesData = $.getdata('CookiesJD') || "[]";
-    cookiesData = JSON.parse(cookiesData);
+    cookiesData = jsonParse(cookiesData);
     cookiesArr = cookiesData.map(item => item.cookie);
     cookiesArr.reverse();
     cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
@@ -118,7 +118,17 @@ function getCookies() {
 }
 
 
-
+function jsonParse(str) {
+  if (typeof str == "string") {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      console.log(e);
+      $.msg($.name, '', '请勿随意在BoxJs输入框修改内容\n建议通过脚本去获取cookie')
+      return [];
+    }
+  }
+}
 
 
 function showMsg() {
