@@ -1,45 +1,29 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: 中青看点
-
+# File: .github/workflows/repo-sync.yml
+name: sync-deploy-scripts
 on:
-  workflow_dispatch:
   schedule:
-     - cron: '*/6 * * * *'
+    - cron: '5 15 * * *'
+  workflow_dispatch:
   watch:
     types: started
-
+  repository_dispatch:
+    types: sync-deploy-scripts
 jobs:
-  build:
+  repo-sync:
+    env:
+      PAT: ${{ github.event.client_payload.PAT || secrets.PAT }} #此处PAT需要申请，教程详见：https://www.jianshu.com/p/bb82b3ad1d11
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
-    env:
-        YOUTH_HEADER: ${{ secrets.YOUTH_HEADER }}
-        YOUTH_ARTBODY: ${{ secrets.YOUTH_ARTBODY }}
-        YOUTH_REDBODY: ${{ secrets.YOUTH_REDBODY }}
-        YOUTH_TIME: ${{ secrets.YOUTH_TIME }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
         with:
-          node-version: 12.x
-      - name: npm install
-        if: env.YOUTH_HEADER
-        run: |
-          npm install
-      - name: '运行 【中青看点】'
-        if: env.YOUTH_HEADER
-        run: |
-          node youth.js
-        env:
-          YOUTH_NOTIFY_CONTROL: ${{ secrets.YOUTH_NOTIFY_CONTROL }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-          BARK_PUSH: ${{ secrets.BARK_PUSH }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
-          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
+          persist-credentials: false
+
+      - name: sync sazs34-scripts
+        uses: repo-sync/github-sync@v2
+        if: env.PAT
+        with:
+          source_repo: "https://github.com/choosec88/0808.git"
+          source_branch: "sync"
+          destination_branch: "sync"
+          github_token: ${{ github.event.client_payload.PAT || secrets.PAT }}
