@@ -230,14 +230,14 @@ function requireConfig() {
 }
 
 async function showMsg() {
-  if (!$.isNode() || notify) {
-    $.msg(`【账号${$.name}${$.index} ${$.userName}】`, `${$.gold}，当前 ${$.current} 元，累计 ${$.sum} 元`, $.message)
-  } else {
-    $.log(`【账号${$.name}${$.index} ${$.userName}】\n ${$.gold}，当前 ${$.current} 元，累计 ${$.sum} 元\n ${$.message}`)
-    if (new Date().getUTCHours() === 14 && new Date().getUTCMinutes() < 10 && notify) {
-      await ntf.sendNotify(`【${$.name}账号${$.index} ${$.userName}】`, `${$.gold}，当前 ${$.current} 元，累计 ${$.sum} 元\n`);
-    }
-  }
+//   if (!$.isNode() || notify) {
+//     $.msg(`【账号${$.name}${$.index} ${$.userName}】`, `${$.gold}，当前 ${$.current} 元，累计 ${$.sum} 元`, $.message)
+//   } else {
+//     $.log(`【账号${$.name}${$.index} ${$.userName}】\n ${$.gold}，当前 ${$.current} 元，累计 ${$.sum} 元\n ${$.message}`)
+//     if (new Date().getUTCHours() === 14 && new Date().getUTCMinutes() < 10 && notify) {
+//       await ntf.sendNotify(`【${$.name}账号${$.index} ${$.userName}】`, `${$.gold}，当前 ${$.current} 元，累计 ${$.sum} 元\n`);
+//     }
+//   }
 }
 
 async function jkd() {
