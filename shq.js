@@ -158,6 +158,9 @@ key = result.data.data[0].articleId
 //生活圈提交
 function shqtj(timeout = 0) {
   return new Promise((resolve) => {
+    if(name.length<10){
+     name = name+','+name
+    }
 let url = {
         url : "https://ex.jwshq.cn/app/commentator/comment",
         headers : JSON.parse(shqhd),
